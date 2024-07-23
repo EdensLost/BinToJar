@@ -4,13 +4,17 @@ import helpers.*;
 
 public class BinToJar {
     public static void main(String[] args) {
-        // Takes the current path from the info.txt file to be used to make a jar
-        String infoFilePath = FileH.fileToArray(FileH.getFilePath("info.txt"))[0].split(" ")[1];
+        // Takes the current number from the BTJ-List-Num.info file to be used to pick the path from BTJ-List.info
+        String infoFilePath = FileH.fileToArray(FileH.getFilePath("BTJ-List-Num.info"))[0].split(" ")[1];
+        int infoFileNum = Integer.valueOf(infoFilePath);
 
+        // Takes the list of paths from the BTJ-List.info file to be used to make a jar using the number from BTJ-List-Num.info
+        String curFilePath = FileH.fileToArray(FileH.getFilePath("BTJ-List.info"))[infoFileNum - 1].split(" ")[1];
+        
         // If an BTJ file exists
         try {
             // Gets the BTJ file path
-            String btjFilePath =  infoFilePath + "\\BTJ.info";
+            String btjFilePath =  curFilePath + "\\BTJ.info";
 
             // Converts the BTJ.info file into the main class name and jar name
             String [] stcInfoStrings = FileH.fileToArray(btjFilePath);
@@ -18,7 +22,7 @@ public class BinToJar {
             String jarName = stcInfoStrings[1].split(" ")[1];
 
             // Set the directory to the project to turn into a jar file
-            File directory = new File(infoFilePath);
+            File directory = new File(curFilePath);
 
             // Creates a text file that is used to contain all of the class files
             //UtilH.runCommand(directory, "dir /s /b src\\*.java > sources.txt");
@@ -27,10 +31,10 @@ public class BinToJar {
             //UtilH.runCommand(directory, "javac -d classes @sources.txt");
 
             // Creates a manifest.MF file that will be used for creating the jar file
-            FileH.arrayToFile(infoFilePath + "\\manifest.MF", new String[] {"Main-Class: " + mainClassName, ""});
+            FileH.arrayToFile(curFilePath + "\\manifest.MF", new String[] {"Main-Class: " + mainClassName, ""});
 
             // If the jar file already exists delete it
-            File jarFile = new File(infoFilePath + "\\" + jarName + ".jar");
+            File jarFile = new File(curFilePath + "\\" + jarName + ".jar");
             if (jarFile.exists() == true) {
                 UtilH.runCommand(directory, "del " + jarName + ".jar");
                 while (jarFile.exists() == true) {}
@@ -50,7 +54,7 @@ public class BinToJar {
         // If an BTJ file does not already exist
         catch (Exception e) {
             // Creates a BTJ.info file if one does not already exist
-            FileH.arrayToFile(infoFilePath + "\\BTJ.info", new String[] {"Main-Java-File: ", "Jar-Name: ", "Paste-Path: " + infoFilePath});
+            FileH.arrayToFile(curFilePath + "\\BTJ.info", new String[] {"Main-Java-File: ", "Jar-Name: ", "This-Path: " + infoFilePath});
         }
         
 

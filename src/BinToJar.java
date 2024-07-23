@@ -4,12 +4,12 @@ import helpers.*;
 
 public class BinToJar {
     public static void main(String[] args) {
-        // Takes the current number from the BTJ-List-Num.info file to be used to pick the path from BTJ-List.info
-        String infoFilePath = FileH.fileToArray(FileH.getFilePath("BTJ-List-Num.info"))[0].split(" ")[1];
-        int infoFileNum = Integer.valueOf(infoFilePath);
+        // Takes the current number from the BTJ-List.info file to be used to pick the path in the file
+        String infoFile[] = FileH.fileToArray(FileH.getFilePath("BTJ-List.info"));
+        int infoFileNum = Integer.valueOf(infoFile[0].split(" ")[1]);
 
-        // Takes the list of paths from the BTJ-List.info file to be used to make a jar using the number from BTJ-List-Num.info
-        String curFilePath = FileH.fileToArray(FileH.getFilePath("BTJ-List.info"))[infoFileNum - 1].split(" ")[1];
+        // Finds the corresponding path located in the info file
+        String curFilePath = infoFile[infoFileNum].split(" ")[1];
         
         // If an BTJ file exists
         try {
@@ -54,7 +54,7 @@ public class BinToJar {
         // If an BTJ file does not already exist
         catch (Exception e) {
             // Creates a BTJ.info file if one does not already exist
-            FileH.arrayToFile(curFilePath + "\\BTJ.info", new String[] {"Main-Java-File: ", "Jar-Name: ", "This-Path: " + infoFilePath});
+            FileH.arrayToFile(curFilePath + "\\BTJ.info", new String[] {"Main-Java-File: ", "Jar-Name: ", "This-Path: " + curFilePath});
         }
         
 

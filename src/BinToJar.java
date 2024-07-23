@@ -50,7 +50,7 @@ public class BinToJar {
         // If an BTJ file does not already exist
         catch (Exception e) {
             // Creates a BTJ.info file if one does not already exist
-            FileH.arrayToFile(infoFilePath + "\\BTJ.info", new String[] {"Main-Java-File: ", "Jar-Name: ", "Paste-Path: "});
+            FileH.arrayToFile(infoFilePath + "\\BTJ.info", new String[] {"Main-Java-File: ", "Jar-Name: ", "Paste-Path: " + infoFilePath});
         }
         
 
